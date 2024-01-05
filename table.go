@@ -66,22 +66,26 @@ func NewTable(width int) *table.Table {
 
 	re := lipgloss.NewRenderer(os.Stdout)
 
+	colWidth := (width - 3) / 3
+
 	var (
 		// HeaderStyle is the lipgloss style used for the table headers.
 		HeaderStyle = re.NewStyle().Foreground(purple).Bold(true).Align(lipgloss.Center)
+
 		// CellStyle is the base lipgloss style used for the table rows.
-		CellStyle = re.NewStyle().Padding(1, 1).Width(30).Align(lipgloss.Center)
+		CellStyle = re.NewStyle().Padding(1, 2).Width(colWidth)
+
 		// OddRowStyle is the lipgloss style used for odd-numbered table rows.
 		OddRowStyle = CellStyle.Copy().Foreground(gray)
+
 		// EvenRowStyle is the lipgloss style used for even-numbered table rows.
-		EvenRowStyle = CellStyle.Copy().Foreground(lightGray)
+		// EvenRowStyle = CellStyle.Copy().Foreground(lightGray)
+
 		// BorderStyle is the lipgloss style used for the table border.
 		BorderStyle = lipgloss.NewStyle().Foreground(purple)
 	)
 
 	rows := makeTable()
-
-	colWidth := (width - 3) / 3
 
 	t := table.New().
 		Border(lipgloss.ThickBorder()).
@@ -91,13 +95,13 @@ func NewTable(width int) *table.Table {
 			switch {
 			case row == 0:
 				return HeaderStyle
-			case row%2 == 0:
-				style = EvenRowStyle
+			// case row%2 == 0:
+			// 	style = EvenRowStyle
 			default:
 				style = OddRowStyle
 			}
 
-			style = style.Copy().Width(colWidth)
+			// style = style.Copy().Width(colWidth)
 
 			return style
 		}).
