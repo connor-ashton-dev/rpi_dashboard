@@ -81,7 +81,7 @@ func NewTable(width int) *table.Table {
 
 	rows := makeTable()
 
-	colWidth := (width - 3) / 3
+	colWidth := (width - 10) / 3
 
 	t := table.New().
 		Border(lipgloss.ThickBorder()).
