@@ -62,7 +62,7 @@ func makeTable() [][]string {
 	return rows
 }
 
-func NewTable() *table.Table {
+func NewTable(width int) *table.Table {
 
 	re := lipgloss.NewRenderer(os.Stdout)
 
@@ -70,7 +70,7 @@ func NewTable() *table.Table {
 		// HeaderStyle is the lipgloss style used for the table headers.
 		HeaderStyle = re.NewStyle().Foreground(purple).Bold(true).Align(lipgloss.Center)
 		// CellStyle is the base lipgloss style used for the table rows.
-		CellStyle = re.NewStyle().Padding(0, 1).Width(14)
+		CellStyle = re.NewStyle().Padding(0, 1).Width(30)
 		// OddRowStyle is the lipgloss style used for odd-numbered table rows.
 		OddRowStyle = CellStyle.Copy().Foreground(gray)
 		// EvenRowStyle is the lipgloss style used for even-numbered table rows.
@@ -80,6 +80,8 @@ func NewTable() *table.Table {
 	)
 
 	rows := makeTable()
+
+	colWidth := (width - 3) / 3
 
 	t := table.New().
 		Border(lipgloss.ThickBorder()).
@@ -95,15 +97,7 @@ func NewTable() *table.Table {
 				style = OddRowStyle
 			}
 
-			// Make the second column a little wider.
-			if col == 1 {
-				style = style.Copy().Width(22)
-			}
-
-			// Arabic is a right-to-left language, so right align the text.
-			if row < len(rows) && rows[row-1][0] == "Arabic" && col != 0 {
-				style = style.Copy().Align(lipgloss.Right)
-			}
+			style = style.Copy().Width(colWidth)
 
 			return style
 		}).

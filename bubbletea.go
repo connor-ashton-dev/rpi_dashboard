@@ -8,7 +8,9 @@ import (
 )
 
 type model struct {
-	table *table.Table
+	table  *table.Table
+	width  int
+	height int
 }
 
 func (m model) Init() tea.Cmd {
@@ -17,6 +19,12 @@ func (m model) Init() tea.Cmd {
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 	switch msg := msg.(type) {
+	case tea.WindowSizeMsg:
+		m.width = msg.Width
+		m.height = msg.Height
+		m.table = NewTable(m.width)
+		return m, nil
+
 	case tea.KeyMsg:
 		if msg.String() == "q" {
 			return m, tea.Quit
